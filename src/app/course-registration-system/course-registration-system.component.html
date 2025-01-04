@@ -1,0 +1,70 @@
+<form [formGroup]="registrationForm" appFocusInvalid (ngSubmit)="onSubmit()">
+    <div>
+      <label for="studentName">Student Name</label>
+      <input id="studentName" formControlName="studentName" type="text" />
+      <div *ngIf="registrationForm.get('studentName')?.touched && registrationForm.get('studentName')?.invalid">
+        Student name is required.
+      </div>
+    </div>
+  
+    <div>
+      <label for="studentEmail">Student Email</label>
+      <input id="studentEmail" formControlName="studentEmail" type="email" />
+      <div *ngIf="registrationForm.get('studentEmail')?.touched && registrationForm.get('studentEmail')?.hasError('required')">
+        Email is required.
+      </div>
+      <div *ngIf="registrationForm.get('studentEmail')?.touched && registrationForm.get('studentEmail')?.hasError('email')">
+        Enter a valid email.
+      </div>
+      <div *ngIf="registrationForm.get('studentEmail')?.pending">
+        Checking email availability...
+      </div>
+      <div *ngIf="registrationForm.get('studentEmail')?.hasError('emailTaken')">
+        This email is already taken.
+      </div>
+    </div>
+  
+    <div>
+      <label>Courses</label>
+      <button class="add-course-btn" type="button" (click)="addCourse()">Add Course</button>
+      <div formArrayName="courses">
+        <div *ngFor="let course of courses.controls; let i = index">
+          <input [formControlName]="i" placeholder="Course Name" />
+          <button class="course-item" type="button" (click)="removeCourse(i)">Remove</button>
+        </div>
+      </div>
+      <div *ngIf="courses.hasError('noCoursesSelected')">
+        At least one course must be selected.
+      </div>
+    </div>
+  
+    <div formGroupName="paymentDetails">
+      <div>
+        <label for="cardNumber">Card Number</label>
+        <input id="cardNumber" formControlName="cardNumber" type="text" />
+        <div *ngIf="registrationForm.get('paymentDetails.cardNumber')?.touched && registrationForm.get('paymentDetails.cardNumber')?.hasError('required')">
+          Card number is required.
+        </div>
+        <div *ngIf="registrationForm.get('paymentDetails.cardNumber')?.hasError('pattern')">
+          Card number must be 16 digits.
+        </div>
+      </div>
+  
+      <div>
+        <label for="expiryDate">Expiry Date</label>
+        <input id="expiryDate" formControlName="expiryDate" type="date" placeholder="MM/YY" />
+        <div *ngIf="registrationForm.get('paymentDetails.expiryDate')?.touched && registrationForm.get('paymentDetails.expiryDate')?.invalid">
+          Expiry date is required.
+        </div>
+      </div>
+    </div>
+  
+    <div>
+      <button type="submit" [disabled]="registrationForm.invalid">Submit</button>
+    </div>
+  
+    <div *ngIf="registrationForm.invalid && registrationForm.touched">
+      <p>Form is invalid. Please correct the errors and try again.</p>
+    </div>
+  </form>
+  
