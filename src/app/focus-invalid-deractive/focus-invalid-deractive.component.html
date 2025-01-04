@@ -1,0 +1,39 @@
+<div style="text-align: center;">
+    <h1>Focus Invalid Directive</h1>
+</div>
+<form [formGroup]="registrationForm" appFocusInvalid (ngSubmit)="onSubmit()">
+    <div>
+      <label for="name">Name</label>
+      <input id="name" formControlName="name" type="text" />
+      <div *ngIf="registrationForm.get('name')?.touched && registrationForm.get('name')?.invalid">
+        Name is required.
+      </div>
+    </div>
+  
+    <div>
+      <label for="email">Email</label>
+      <input id="email" formControlName="email" type="email" />
+      <div *ngIf="registrationForm.get('email')?.touched && registrationForm.get('email')?.invalid">
+        Email is required and must be valid.
+      </div>
+    </div>
+  
+    <div>
+      <label for="password">Password</label>
+      <input id="password" formControlName="password" type="password" />
+      <div *ngIf="registrationForm.get('password')?.touched && registrationForm.get('password')?.invalid">
+        Password is required.
+      </div>
+    </div>
+  
+    <div>
+      <label for="confirmPassword">Confirm Password</label>
+      <input id="confirmPassword" formControlName="confirmPassword" type="password" />
+      <div *ngIf="registrationForm.hasError('passwordsMismatch')">
+        Passwords must match.
+      </div>
+    </div>
+  
+    <button type="submit" [disabled]="registrationForm.invalid">Register</button>
+  </form>
+  
