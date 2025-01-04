@@ -1,0 +1,51 @@
+<div style="text-align: center">
+  <h1>Employee Details Form</h1>
+</div>
+
+<ng-container class="container">
+  <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+    <div class="form-section">
+      <label for="employeeName">Employee Name</label>
+      <input
+        type="text"
+        placeholder="Enter Employee Name"
+        formControlName="name"
+      />
+
+      <label for="department">Department</label>
+      <select formControlName="department">
+        <option value="" disabled selected>Select a department</option>
+        <option *ngFor="let department of departments" [value]="department.name">
+          {{ department.name }}
+        </option>
+      </select>
+
+      <label class="form-label">Joining Date:</label>
+      <input type="date" class="form-input" formControlName="joiningDate" />
+    </div>
+
+    <div class="assignment-section" formArrayName="skills">
+      <div
+        class="assignment-group"
+        *ngFor="let skill of skills.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <label class="form-label">Skills Name:</label>
+        <input type="text" class="form-input" formControlName="skillsName" placeholder="Add Skill"/>
+
+        <button
+          type="button"
+          class="remove-assignment"
+          (click)="removeAssignment(i)"
+        >
+          Remove Project
+        </button>
+      </div>
+      <button type="button" class="add-assignment" (click)="addAssignment()">
+        Add Skill
+      </button>
+    </div>
+
+    <button type="submit" class="submit-btn" [disabled]="employeeForm.invalid">Submit</button>
+  </form>
+</ng-container>
